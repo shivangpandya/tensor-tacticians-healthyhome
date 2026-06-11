@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 420" role="img" aria-label="Coastal apartment building near transit">
+  <rect width="720" height="420" fill="#b9e2ff"/>
+  <path d="M0 292c90-22 187-21 296 0 145 28 263 20 424-22v150H0z" fill="#e5dcb7"/>
+  <path d="M58 150h260v190H58z" fill="#e9f1f8"/>
+  <path d="M330 128h302v212H330z" fill="#cad9e5"/>
+  <path d="M50 134h278v28H50zM320 112h322v28H320z" fill="#637b8e"/>
+  <g fill="#d9f3ff" stroke="#5c788d" stroke-width="7">
+    <rect x="91" y="184" width="50" height="40"/>
+    <rect x="169" y="184" width="50" height="40"/>
+    <rect x="247" y="184" width="42" height="40"/>
+    <rect x="366" y="168" width="48" height="40"/>
+    <rect x="444" y="168" width="48" height="40"/>
+    <rect x="522" y="168" width="48" height="40"/>
+    <rect x="366" y="236" width="48" height="40"/>
+    <rect x="444" y="236" width="48" height="40"/>
+    <rect x="522" y="236" width="48" height="40"/>
+  </g>
+  <path d="M0 358c119-23 235-21 349-6 120 15 229 11 371-21v89H0z" fill="#7da1bc"/>
+  <path d="M120 350h480" stroke="#f9fafb" stroke-width="16" stroke-linecap="round"/>
+  <g fill="#226c43">
+    <circle cx="642" cy="317" r="30"/>
+    <circle cx="72" cy="321" r="24"/>
+  </g>
+</svg>

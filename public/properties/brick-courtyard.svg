@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 420" role="img" aria-label="Brick apartment courtyard">
+  <rect width="720" height="420" fill="#bfe4ff"/>
+  <path d="M0 320h720v100H0z" fill="#aac483"/>
+  <path d="M74 128h242v220H74z" fill="#b96b46"/>
+  <path d="M404 110h242v238H404z" fill="#c9784d"/>
+  <path d="M316 176h88v172h-88z" fill="#875439"/>
+  <g fill="#d8effc" stroke="#72412e" stroke-width="7">
+    <rect x="112" y="160" width="52" height="42"/>
+    <rect x="191" y="160" width="52" height="42"/>
+    <rect x="112" y="230" width="52" height="42"/>
+    <rect x="191" y="230" width="52" height="42"/>
+    <rect x="442" y="152" width="52" height="42"/>
+    <rect x="522" y="152" width="52" height="42"/>
+    <rect x="442" y="226" width="52" height="42"/>
+    <rect x="522" y="226" width="52" height="42"/>
+  </g>
+  <path d="M335 348c28-32 55-32 82 0" fill="#e8f3df"/>
+  <path d="M0 370c158-22 277-25 383-11 119 16 219 14 337-13v74H0z" fill="#84a866"/>
+  <g fill="#236b38">
+    <circle cx="354" cy="317" r="25"/>
+    <circle cx="653" cy="321" r="31"/>
+    <circle cx="45" cy="328" r="22"/>
+  </g>
+</svg>

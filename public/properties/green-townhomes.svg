@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 420" role="img" aria-label="Green townhomes with trees">
+  <rect width="720" height="420" fill="#bde6ff"/>
+  <path d="M0 325c160-38 284-42 412-19 112 20 190 18 308-9v123H0z" fill="#bad99d"/>
+  <path d="M80 178h168v164H80zM276 160h168v182H276zM472 178h168v164H472z" fill="#dfe8d7"/>
+  <path d="m68 182 96-75 96 75zM264 164l96-75 96 75zM460 182l96-75 96 75z" fill="#4e665b"/>
+  <g fill="#eaf7ff" stroke="#71837a" stroke-width="7">
+    <rect x="118" y="216" width="48" height="44"/>
+    <rect x="328" y="204" width="48" height="44"/>
+    <rect x="524" y="216" width="48" height="44"/>
+  </g>
+  <rect x="190" y="248" width="36" height="94" fill="#876c51"/>
+  <rect x="394" y="242" width="36" height="100" fill="#876c51"/>
+  <rect x="590" y="248" width="36" height="94" fill="#876c51"/>
+  <g fill="#23743b">
+    <circle cx="58" cy="311" r="32"/>
+    <circle cx="660" cy="308" r="35"/>
+    <circle cx="253" cy="325" r="22"/>
+  </g>
+  <path d="M42 354h632" stroke="#f4f8f0" stroke-width="18" stroke-linecap="round"/>
+</svg>

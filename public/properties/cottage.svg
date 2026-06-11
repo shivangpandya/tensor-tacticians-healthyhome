@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 420" role="img" aria-label="Light cottage rental home">
+  <rect width="720" height="420" fill="#cfeeff"/>
+  <path d="M0 312c117-36 232-32 348-12 109 18 214 17 372-25v145H0z" fill="#cce7bd"/>
+  <path d="M115 195h420v150H115z" fill="#e7dfd2"/>
+  <path d="M88 202 326 72l240 130z" fill="#56636e"/>
+  <path d="M116 205 326 94l210 111z" fill="#f8fafc"/>
+  <path d="M177 224h70v63h-70zM397 224h70v63h-70z" fill="#edf7ff" stroke="#5a6d78" stroke-width="8"/>
+  <path d="M294 222h66v123h-66z" fill="#8b684d"/>
+  <circle cx="346" cy="285" r="5" fill="#f4d48d"/>
+  <path d="M139 343h430" stroke="#f7f7f2" stroke-width="16" stroke-linecap="round"/>
+  <g fill="#278344">
+    <circle cx="85" cy="330" r="24"/>
+    <circle cx="585" cy="322" r="34"/>
+    <circle cx="638" cy="336" r="20"/>
+  </g>
+  <path d="M0 365h720v55H0z" fill="#8fb274"/>
+</svg>
