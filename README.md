@@ -1,83 +1,19 @@
-## What Did You Build?
+1. What did you build?
+We built Healthy Home Matcher, an AI-powered health-fit layer for housing search. It helps renters and homebuyers understand whether a home will support or work against their health, lifestyle, and medical needs before they commit to a lease or purchase.
+The story is simple: people already compare homes by price, size, photos, schools, and commute, but they are left to figure out health fit on their own. A home can look perfect online and still make daily life harder because it has poor air quality, weak grocery access, low walkability, high environmental risk, or limited access to relevant medical care.
+Healthy Home Matcher turns those scattered health signals into two clear scores: a Preventative / Active Health Score and a Medical Access Score. The Preventative / Active Health Score shows how well the home supports daily healthy living, including walkability, air quality, pollution exposure, parks, grocery access, and environmental safety. The Medical Access Score shows how well the location supports specific medical needs, including access to hospitals, pharmacies, clinics, cancer treatment, diabetes care, dialysis, allergy care, and asthma care.
+What we can open to prove it works is a demo comparing homes with similar rent and commute, then showing how they differ on health fit. The demo should reveal each home’s scores, top strengths, top risks, plain-English explanations, and the tradeoffs a user should understand before signing a lease or making an offer.
 
-We built **Home Health Matcher**, an AI-powered housing search dashboard that helps renters find homes based not only on rent, bedrooms, and location, but also on health-related community factors like preventive care access, diabetes prevalence, transit access, nearby hospitals, and affordability.
+2. Who has this problem?
+This problem affects renters, homebuyers, caregivers, families, health-conscious movers, and people managing existing medical needs.
+A specific user could be a parent looking for a home that is better for a child with asthma. Another could be an adult helping an older parent move closer to pharmacies, clinics, and hospitals. Another could be someone who needs regular dialysis or cancer treatment and cannot afford to live far from care. Another could be a health-conscious renter who wants a neighborhood that makes it easier to walk, buy fresh food, avoid poor air, and spend time near parks or green space.
+Today, without Healthy Home Matcher, that person starts on Zillow, Redfin, Apartments.com, Realtor.com, or another housing site. Then they have to open separate tabs for air quality maps, hazard maps, grocery searches, walkability tools, hospital directories, pharmacy searches, and condition-specific provider searches. They have to manually compare all of that information and guess what it means for the homes they are considering.
+That is slow because the data is scattered across many sources. It is frustrating because housing platforms do not explain health tradeoffs in plain English. It is expensive because housing decisions are high-cost and hard to reverse. It is painful because many people only discover problems after moving, when they are already locked into a lease, mortgage, commute, school zone, or care routine.
+This matters because where someone lives affects how much they move, how easily they can buy healthy food, how much pollution or environmental risk they face, how hard it is to attend medical appointments, and how much stress falls on caregivers and families.
 
-Instead of forcing someone to compare housing listings in one tab and community health data in another, the app brings both together in one guided workflow: describe the kind of home and neighborhood you want, get ranked matches, inspect health and housing metrics, view nearby healthcare resources, and compare listings on a map.
-
-## Who Has This Problem?
-
-Our target user is a renter like Maria, a working parent managing a chronic health condition while trying to move her family into a safer, healthier, and still affordable home.
-
-Today, Maria might search Zillow or Apartments.com for rent and bedrooms, then separately Google nearby hospitals, public transit, neighborhood safety, food access, and health resources. That process is slow, fragmented, and emotionally exhausting. The homes that look cheapest are not always the best fit for her family's long-term health, and the healthiest areas may appear unaffordable unless she can compare tradeoffs clearly.
-
-This problem also affects caregivers, older adults, people with diabetes or asthma, public health navigators, housing counselors, and anyone trying to make a housing decision where health access matters as much as price.
-
-## How Does Your App Solve It?
-
-Home Health Matcher turns a plain-language housing need into a ranked list of healthier housing matches.
-
-A user can type something like, "I need a 2-bedroom rental under $2,400 near transit and healthcare," and the app parses that intent using an AI fallback chain. It then ranks listings using housing fit plus community health indicators. After using the app, the renter can quickly see which homes are affordable, which neighborhoods have stronger health signals, what care resources are nearby, and why a listing matched.
-
-The most important demo workflow is:
-
-- Open the dashboard.
-- Enter or select a guided housing search prompt.
-- Run search and see the AI parser label.
-- Compare ranked listings, health scores, map pins, charts, and nearby healthcare resources.
-- Open a listing detail view and save a listing or search.
-
-## How Did You Build It?
-
-We built the app as a Next.js prototype with React, TypeScript, Tailwind CSS, Leaflet maps, Recharts visualizations, and Lucide icons.
-
-The backend search route uses a resilient AI parsing chain:
-
-- OCI Generative AI first, when credentials are configured.
-- Vercel AI Gateway fallback.
-- A deterministic local parser so the demo still works without cloud credentials.
-
-The app uses seeded fictional rental listings near real 04043-area place names, public-data-inspired community metrics, local ranking logic, map visualization, health and housing overview cards, healthcare resource panels, saved listings/search state, and a responsive dashboard UI.
-
-## Demo URL
-
-`https://your-demo-url.vercel.app`
-
-## Repo URL
-
-`https://github.com/your-username/your-repo-name`
-
-## Video URL
-
-`N/A`
-
-# Scoring Breakdown
-
-## Demand Reality And Problem Severity
-
-Housing search is already stressful, but it becomes much harder when health needs are part of the decision. Renters with chronic conditions, families with children, older adults, caregivers, and people without reliable transportation often need to know more than "Can I afford this home?" They need to know whether the home is near healthcare, whether the community has stronger preventive care access, whether transit is realistic, and whether the area supports healthier living.
-
-Today, that research is scattered across rental sites, Google Maps, public health dashboards, transit pages, and local resource lists. That makes the decision slow, confusing, and easy to get wrong. The pain is severe because housing decisions are expensive, infrequent, and high-stakes: choosing the wrong place can affect healthcare access, monthly budget, commute burden, and long-term health outcomes.
-
-## Target Customer And Market Scope
-
-The primary customer is a health-conscious renter or family searching for affordable housing while balancing medical access and quality-of-life needs. A specific example is a parent managing diabetes who needs a rental under budget, near transit, and close to primary care or preventive health resources.
-
-This problem also extends to housing counselors, public health navigators, Medicaid care coordinators, social workers, employers supporting relocation, and local governments trying to connect residents with healthier housing choices. The need is broader than one user because millions of people make housing decisions while also managing healthcare access, transportation constraints, affordability, and chronic disease risk.
-
-## Solution Fit And Product Design
-
-Home Health Matcher makes the user's life better by combining housing search and health-context evaluation in one dashboard. Instead of comparing rental listings in one place and health/community resources elsewhere, users can describe what they need in plain language and immediately see ranked housing matches.
-
-The app shows listings, rent, location, match reasons, health scores, nearby healthcare resources, community health metrics, charts, and a map. The most important workflow is simple: enter a housing need, run search, review ranked homes, inspect why each match is healthy or affordable, and open listing details. That directly reduces research time and makes tradeoffs clearer.
-
-## Technical Execution And Demo Proof
-
-The repo contains a working Next.js prototype with a real dashboard experience. It uses React, TypeScript, Tailwind CSS, Leaflet maps, Recharts, seeded housing data, ranking logic, saved listings/search state, and an API route for search parsing.
-
-The search route is built with a practical AI fallback chain: OCI Generative AI first, Vercel AI Gateway second, and a deterministic local parser last so the demo still works even without cloud credentials. Judges can open the app locally with `npm run dev`, test guided prompts, type their own search, verify ranked results, inspect the map, open details, and see which parser handled the query.
-
-## Differentiation And Investment Readiness
-
-Most housing search tools optimize for price, bedrooms, photos, and location. Home Health Matcher is different because it treats health access and community context as first-class search criteria. That creates a more meaningful decision layer for renters whose housing choices directly affect healthcare access and long-term wellbeing.
-
-This could become important because the product sits at the intersection of housing, healthcare, public health, and benefits navigation. With real listing integrations, verified public health datasets, payer or nonprofit partnerships, and personalized health preferences, it could grow from a prototype into a decision-support platform for healthier housing placement.
+3. How does your app solve it?
+Healthy Home Matcher replaces scattered research and guesswork with a clear health-fit report for each home.
+After someone uses the app, they can understand whether a home supports their daily health and medical needs before they commit. They can compare homes faster because the app brings together signals like air quality, walkability, grocery access, parks, hazard exposure, pharmacies, hospitals, clinics, and condition-specific care. They can make a better decision because the app explains not only which home scores higher, but why it scores higher and what tradeoffs matter.
+The app also personalizes the comparison based on the user’s situation. A general active-living user may care most about walkability, parks, fresh food, and air quality. A user with asthma or allergies may care more about pollution, air quality, and nearby specialists. A user managing diabetes, dialysis, or cancer care may care more about proximity to relevant providers, pharmacies, and hospitals.
+The most important workflow to show in the demo is a user comparing multiple homes before deciding which one to pursue. The user selects a health profile, such as active living or asthma/allergy sensitivity. The app then scores each home, shows the top strengths and risks, explains the tradeoffs in plain English, and generates useful next-step questions for the agent, landlord, inspector, or care provider.
+The key change after using Healthy Home Matcher is that the user no longer treats health as an afterthought in housing search. They can see hidden health tradeoffs before signing a lease or making an offer, choose with more confidence, and avoid discovering major health or care-access problems only after they move.
