@@ -1,17 +1,21 @@
-1. What did you build?
+###1. What did you build?
 We built Healthy Home Matcher, an AI-powered health-fit layer for housing search. It helps renters and homebuyers understand whether a home will support or work against their health, lifestyle, and medical needs before they commit to a lease or purchase.
 The story is simple: people already compare homes by price, size, photos, schools, and commute, but they are left to figure out health fit on their own. A home can look perfect online and still make daily life harder because it has poor air quality, weak grocery access, low walkability, high environmental risk, or limited access to relevant medical care.
 Healthy Home Matcher turns those scattered health signals into two clear scores: a Preventative / Active Health Score and a Medical Access Score. The Preventative / Active Health Score shows how well the home supports daily healthy living, including walkability, air quality, pollution exposure, parks, grocery access, and environmental safety. The Medical Access Score shows how well the location supports specific medical needs, including access to hospitals, pharmacies, clinics, cancer treatment, diabetes care, dialysis, allergy care, and asthma care.
 What we can open to prove it works is a demo comparing homes with similar rent and commute, then showing how they differ on health fit. The demo should reveal each home’s scores, top strengths, top risks, plain-English explanations, and the tradeoffs a user should understand before signing a lease or making an offer.
 
-2. Who has this problem?
+---
+
+### 2. Who has this problem?
 This problem affects renters, homebuyers, caregivers, families, health-conscious movers, and people managing existing medical needs.
 A specific user could be a parent looking for a home that is better for a child with asthma. Another could be an adult helping an older parent move closer to pharmacies, clinics, and hospitals. Another could be someone who needs regular dialysis or cancer treatment and cannot afford to live far from care. Another could be a health-conscious renter who wants a neighborhood that makes it easier to walk, buy fresh food, avoid poor air, and spend time near parks or green space.
 Today, without Healthy Home Matcher, that person starts on Zillow, Redfin, Apartments.com, Realtor.com, or another housing site. Then they have to open separate tabs for air quality maps, hazard maps, grocery searches, walkability tools, hospital directories, pharmacy searches, and condition-specific provider searches. They have to manually compare all of that information and guess what it means for the homes they are considering.
 That is slow because the data is scattered across many sources. It is frustrating because housing platforms do not explain health tradeoffs in plain English. It is expensive because housing decisions are high-cost and hard to reverse. It is painful because many people only discover problems after moving, when they are already locked into a lease, mortgage, commute, school zone, or care routine.
 This matters because where someone lives affects how much they move, how easily they can buy healthy food, how much pollution or environmental risk they face, how hard it is to attend medical appointments, and how much stress falls on caregivers and families.
 
-3. How does your app solve it?
+---
+
+### 3. How does your app solve it?
 Healthy Home Matcher replaces scattered research and guesswork with a clear health-fit report for each home.
 After someone uses the app, they can understand whether a home supports their daily health and medical needs before they commit. They can compare homes faster because the app brings together signals like air quality, walkability, grocery access, parks, hazard exposure, pharmacies, hospitals, clinics, and condition-specific care. They can make a better decision because the app explains not only which home scores higher, but why it scores higher and what tradeoffs matter.
 The app also personalizes the comparison based on the user’s situation. A general active-living user may care most about walkability, parks, fresh food, and air quality. A user with asthma or allergies may care more about pollution, air quality, and nearby specialists. A user managing diabetes, dialysis, or cancer care may care more about proximity to relevant providers, pharmacies, and hospitals.
