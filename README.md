@@ -12,7 +12,8 @@ The larger product vision is not to replace Zillow, Redfin, Apartments.com, Real
 
 The initial wedge is a consumer health-fit report for renters and homebuyers comparing a small number of homes before they commit. The repeatable market expands from there to real estate platforms, relocation firms, agents, healthcare organizations, insurers, caregivers, and employers helping people make housing decisions that affect health, cost, access, and quality of life.
 
-This matters because housing decisions happen at scale. The original research notes that the Census Bureau reported 11.8% of the U.S. population moved to a different residence in 2024, meaning millions of people face housing decisions each year. It also notes that Zillow reported 221 million average monthly unique users and 2.1 billion visits across its apps and sites in Q4 2025, which shows that the housing search behavior already exists at massive scale. The opportunity is to add a missing decision layer to an existing high-frequency behavior, not invent a new market habit.
+This matters because housing decisions happen at scale. The original research notes that the Census Bureau reported 11.8% of the U.S. population moved to a different residence in 2024, meaning millions of people face housing decisions each year. It also notes that Zillow reported 221 million average monthly unique users and 2.1 billion visits across its apps and sites in Q4 2025, which shows that the housing search behavior already exists at massive scale. The opportunity is to add a missing decision layer to an existing high-frequency behavior, not invent a new market habit.The result is not just another housing search prototype. It is a health-fit layer for housing decisions, helping users compare affordability, location, care access, and neighborhood health signals before they commit to a lease.
+
 
 ## 2) Who has this problem?
 
@@ -55,10 +56,6 @@ Once the initial wedge works, the product can expand by adding more cities, more
 We built the app as a Next.js prototype with React, TypeScript, Tailwind CSS, Leaflet maps, Recharts visualizations, and Lucide icons.
 
 The backend search route uses a resilient AI parsing chain:
-
-OCI Generative AI first, when credentials are configured.
-
-Vercel AI Gateway fallback.
 
 A deterministic local parser so the demo still works without cloud credentials.
 
