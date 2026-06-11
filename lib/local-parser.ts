@@ -10,26 +10,49 @@ export function parseIntentLocally(query: string): SearchIntent {
   const bedsMatch = lower.match(/(\d)\s*(?:bed|bd)/);
 
   const healthPriorities: SearchIntent["healthPriorities"] = [];
-  if (lower.includes("diabetes")) healthPriorities.push("low_diabetes");
-  if (lower.includes("preventive")) healthPriorities.push("high_preventive_care");
-  if (lower.includes("primary") || lower.includes("provider") || lower.includes("healthcare")) {
+  const mentionsDiabetes = lower.includes("diabetes");
+  const mentionsPreventive = lower.includes("preventive");
+  const mentionsCareAccess = lower.includes("primary") || lower.includes("provider") || lower.includes("healthcare") || lower.includes("care");
+  const mentionsUninsured = lower.includes("uninsured");
+  const mentionsAir = lower.includes("air");
+  const hasHardRentCap = /\b(?:under|below|less than|no more than|max|maximum|up to|at most)\b/.test(lower);
+  const hasSoftRentPreference = /\b(?:around|about|near|roughly|approximately|approx|budget-friendly|budget friendly)\b/.test(lower);
+  const budgetFocused = lower.includes("affordable") || lower.includes("budget") || hasHardRentCap || hasSoftRentPreference;
+  const transitFocused = lower.includes("transit") || lower.includes("bus") || lower.includes("rail");
+  const explicitHealthFocus =
+    mentionsDiabetes || mentionsPreventive || mentionsCareAccess || mentionsUninsured || mentionsAir || lower.includes("healthy");
+
+  if (mentionsDiabetes) healthPriorities.push("low_diabetes");
+  if (mentionsPreventive) healthPriorities.push("high_preventive_care");
+  if (mentionsCareAccess) {
     healthPriorities.push("primary_care_access");
   }
-  if (lower.includes("uninsured")) healthPriorities.push("low_uninsured");
-  if (lower.includes("air")) healthPriorities.push("air_quality");
-  if (lower.includes("affordable") || lower.includes("budget") || lower.includes("under")) {
+  if (mentionsUninsured) healthPriorities.push("low_uninsured");
+  if (mentionsAir) healthPriorities.push("air_quality");
+  if (budgetFocused) {
     healthPriorities.push("affordability");
   }
-  if (lower.includes("transit") || lower.includes("bus") || lower.includes("rail")) {
+  if (transitFocused) {
     healthPriorities.push("transit");
   }
 
-  const wantsTransit = lower.includes("good transit") || lower.includes("best transit") || lower.includes("rail");
+  const wantsTransit = transitFocused;
   const requiresTransit = lower.includes("must have transit") || lower.includes("transit required");
+  const weights =
+    budgetFocused && transitFocused && !explicitHealthFocus
+      ? { health: 0.05, affordability: 0.3, transit: 0.58, careAccess: 0.07 }
+      : transitFocused && mentionsCareAccess
+        ? { health: 0.08, affordability: 0.08, transit: 0.68, careAccess: 0.16 }
+        : budgetFocused && !explicitHealthFocus
+          ? { health: 0.12, affordability: 0.62, transit: 0.16, careAccess: 0.1 }
+          : healthPriorities.includes("affordability") && !healthPriorities.includes("low_diabetes")
+            ? { health: 0.42, affordability: 0.28, transit: 0.16, careAccess: 0.14 }
+            : { health: 0.58, affordability: 0.16, transit: wantsTransit ? 0.16 : 0.12, careAccess: wantsTransit ? 0.1 : 0.14 };
 
   return {
     ...defaultIntent,
     maxRent,
+    rentConstraint: rentMatch && hasHardRentCap ? "hard" : "soft",
     radiusMiles: radiusMatch ? Number(radiusMatch[1]) : defaultIntent.radiusMiles,
     locationLabel: zipMatch ? `${zipMatch[0]} + ${radiusMatch ? Number(radiusMatch[1]) : 10} miles` : defaultIntent.locationLabel,
     beds: bedsMatch ? Number(bedsMatch[1]) : undefined,
@@ -38,10 +61,7 @@ export function parseIntentLocally(query: string): SearchIntent {
       healthPriorities.length > 0
         ? Array.from(new Set(healthPriorities))
         : defaultIntent.healthPriorities,
-    weights:
-      healthPriorities.includes("affordability") && !healthPriorities.includes("low_diabetes")
-        ? { health: 0.42, affordability: 0.28, transit: 0.16, careAccess: 0.14 }
-        : { health: 0.58, affordability: 0.16, transit: wantsTransit ? 0.16 : 0.12, careAccess: wantsTransit ? 0.1 : 0.14 },
+    weights,
     confidence: 0.7,
     explanation:
       "Parsed locally using known health, rent, location, care-access, and transit terms so the prototype remains demo-ready."

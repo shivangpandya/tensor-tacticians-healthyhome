@@ -67,7 +67,7 @@ export function rankListings(listingData: Listing[], intent: SearchIntent): Rank
       };
     })
     .filter((listing) => {
-      const budgetLimit = intent.maxRent + 150;
+      const budgetLimit = intent.rentConstraint === "hard" ? intent.maxRent : intent.maxRent + 150;
       const bedMatch = intent.beds ? listing.beds >= intent.beds : true;
       const transitMatch = intent.transitPreference === "required" ? listing.area.transitScore >= 60 : true;
       return listing.rent <= budgetLimit && bedMatch && transitMatch;

@@ -24,6 +24,7 @@ export const guidedPrompts = [
 export const defaultIntent: SearchIntent = {
   propertyType: "rental",
   maxRent: 2000,
+  rentConstraint: "soft",
   locationLabel: "04043 + 10 miles",
   radiusMiles: 10,
   transitPreference: "preferred",
@@ -44,37 +45,61 @@ export const dataSources = [
     metric: "Diabetes prevalence",
     source: "CDC PLACES-style community health indicators",
     year: "Seeded 2024 sample",
-    definition: "Estimated share of adults with diagnosed diabetes in the selected community."
+    definition: "Estimated share of adults with diagnosed diabetes in the selected community.",
+    sourceLinks: [
+      { label: "CDC PLACES", href: "https://www.cdc.gov/places/" },
+      { label: "PLACES Data Portal", href: "https://data.cdc.gov/browse?category=PLACES" }
+    ]
   },
   {
     metric: "Preventive care use",
     source: "CDC/claims-style preventive utilization indicators",
     year: "Seeded 2024 sample",
-    definition: "Estimated share of residents receiving recommended preventive care."
+    definition: "Estimated share of residents receiving recommended preventive care.",
+    sourceLinks: [
+      { label: "CDC PLACES Measures", href: "https://www.cdc.gov/places/measure-definitions/" },
+      { label: "CDC PLACES Methodology", href: "https://www.cdc.gov/places/methodology/" }
+    ]
   },
   {
     metric: "Housing affordability",
     source: "ACS/HUD-style housing burden indicators",
     year: "Seeded 2024 sample",
-    definition: "Estimated share of household income used for monthly housing costs."
+    definition: "Estimated share of household income used for monthly housing costs.",
+    sourceLinks: [
+      { label: "HUD CHAS Data", href: "https://www.huduser.gov/portal/datasets/cp.html" },
+      { label: "Census ACS", href: "https://www.census.gov/programs-surveys/acs" }
+    ]
   },
   {
     metric: "Primary-care access",
     source: "HRSA/provider-access-style indicators",
     year: "Seeded 2024 sample",
-    definition: "Provider availability and proximity summarized for the selected area."
+    definition: "Provider availability and proximity summarized for the selected area.",
+    sourceLinks: [
+      { label: "HRSA Data Warehouse", href: "https://data.hrsa.gov/" },
+      { label: "Find a Health Center", href: "https://findahealthcenter.hrsa.gov/" }
+    ]
   },
   {
     metric: "Transit access",
     source: "Local transit/GTFS-style access indicators",
     year: "Seeded 2024 sample",
-    definition: "Transit availability near the property and surrounding community."
+    definition: "Transit availability near the property and surrounding community.",
+    sourceLinks: [
+      { label: "GTFS Standard", href: "https://gtfs.org/" },
+      { label: "MaineDOT Transit", href: "https://www.maine.gov/mdot/transit/" }
+    ]
   },
   {
     metric: "Air quality",
     source: "EPA/AirNow-style air quality indicators",
     year: "Seeded 2024 sample",
-    definition: "Lower score indicates cleaner air conditions in this prototype model."
+    definition: "Lower score indicates cleaner air conditions in this prototype model.",
+    sourceLinks: [
+      { label: "EPA AirData", href: "https://www.epa.gov/outdoor-air-quality-data" },
+      { label: "AirNow", href: "https://www.airnow.gov/" }
+    ]
   }
 ];
 
@@ -90,7 +115,7 @@ export const listings: Listing[] = [
     beds: 2,
     baths: 2,
     sqft: 1050,
-    image: "/properties/blue-apartments.svg",
+    image: "/properties/sample-house-apartments.png",
     lat: 43.384,
     lng: -70.537,
     area: {
@@ -134,7 +159,7 @@ export const listings: Listing[] = [
     beds: 1,
     baths: 1,
     sqft: 750,
-    image: "/properties/cottage.svg",
+    image: "/properties/sample-house-farmhouse.png",
     lat: 43.322,
     lng: -70.582,
     area: {
@@ -178,7 +203,7 @@ export const listings: Listing[] = [
     beds: 2,
     baths: 1,
     sqft: 900,
-    image: "/properties/brick-courtyard.svg",
+    image: "/properties/sample-house-brick-apartments.avif",
     lat: 43.492,
     lng: -70.454,
     area: {
@@ -222,7 +247,7 @@ export const listings: Listing[] = [
     beds: 2,
     baths: 1,
     sqft: 800,
-    image: "/properties/kitchen.svg",
+    image: "/properties/sample-house-kitchen.avif",
     lat: 43.443,
     lng: -70.526,
     area: {
@@ -266,7 +291,7 @@ export const listings: Listing[] = [
     beds: 2,
     baths: 2,
     sqft: 980,
-    image: "/properties/green-townhomes.svg",
+    image: "/properties/sample-house-townhomes.jpg",
     lat: 43.500,
     lng: -70.442,
     area: {
@@ -310,7 +335,7 @@ export const listings: Listing[] = [
     beds: 2,
     baths: 1,
     sqft: 910,
-    image: "/properties/coastal-apartments.svg",
+    image: "/properties/sample-house-coastal-apartments.jpg",
     lat: 43.517,
     lng: -70.378,
     area: {

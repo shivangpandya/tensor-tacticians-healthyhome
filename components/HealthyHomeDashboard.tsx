@@ -9,6 +9,7 @@ import {
   Bus,
   Check,
   ChevronDown,
+  ExternalLink,
   Heart,
   Home,
   Hospital,
@@ -53,6 +54,18 @@ function formatMoney(value: number) {
     currency: "USD",
     maximumFractionDigits: 0
   }).format(value);
+}
+
+function formatPointDelta(start: number, end: number) {
+  const delta = end - start;
+  const sign = delta > 0 ? "+" : "";
+  return `${sign}${delta.toFixed(1)} pts`;
+}
+
+function formatMoneyDelta(start: number, end: number) {
+  const delta = end - start;
+  const sign = delta >= 0 ? "+" : "-";
+  return `${sign}${formatMoney(Math.abs(delta))}`;
 }
 
 function Badge({ children }: { children: React.ReactNode }) {
@@ -102,18 +115,27 @@ function ListingCard({
   selected,
   saved,
   onSelect,
-  onToggleSave
+  onToggleSave,
+  onViewDetails
 }: {
   listing: RankedListing;
   selected: boolean;
   saved: boolean;
   onSelect: () => void;
   onToggleSave: () => void;
+  onViewDetails: () => void;
 }) {
   return (
-    <button
-      type="button"
+    <article
+      role="button"
+      tabIndex={0}
       onClick={onSelect}
+      onKeyDown={(event) => {
+        if (event.key === "Enter" || event.key === " ") {
+          event.preventDefault();
+          onSelect();
+        }
+      }}
       className={`group grid w-full grid-cols-[138px_1fr] gap-4 rounded-lg border bg-white p-3 text-left shadow-card transition hover:-translate-y-0.5 hover:shadow-panel ${
         selected ? "border-primary ring-2 ring-blue-100" : "border-line-soft"
       }`}
@@ -139,7 +161,8 @@ function ListingCard({
               {listing.town}, {listing.state} {listing.zip}
             </div>
           </div>
-          <span
+          <button
+            type="button"
             onClick={(event) => {
               event.stopPropagation();
               onToggleSave();
@@ -147,11 +170,10 @@ function ListingCard({
             className={`grid h-10 w-10 shrink-0 place-items-center rounded-lg border ${
               saved ? "border-blue-200 bg-blue-50 text-primary" : "border-line-soft bg-white text-navy"
             }`}
-            role="button"
-            tabIndex={0}
+            aria-label={saved ? "Remove saved listing" : "Save listing"}
           >
             <Heart className={saved ? "h-5 w-5 fill-current" : "h-5 w-5"} />
-          </span>
+          </button>
         </div>
         <div className="mt-3 flex flex-wrap gap-x-4 gap-y-1 text-xs font-semibold text-slate-700">
           <span>{listing.beds} bd</span>
@@ -167,37 +189,49 @@ function ListingCard({
             <div className="font-extrabold text-health">{listing.scoreLabel}</div>
           </div>
         </div>
+        <button
+          type="button"
+          onClick={(event) => {
+            event.stopPropagation();
+            onViewDetails();
+          }}
+          className="mt-4 w-full rounded-md bg-primary px-4 py-2.5 text-sm font-extrabold text-white transition hover:bg-primary-dark"
+        >
+          View Property Details
+        </button>
       </div>
-    </button>
+    </article>
   );
 }
 
 function ScorePanel({ listing }: { listing: RankedListing }) {
+  const reasons = Array.from(new Set(listing.matchReasons.concat(listing.highlights))).slice(0, 6);
+
   return (
-    <div className="grid gap-4 rounded-lg border border-green-200 bg-health-soft p-4 md:grid-cols-[180px_1fr_180px]">
-      <div className="flex items-center gap-4 md:flex-col md:items-start md:justify-center">
-        <div className="grid h-24 w-24 place-items-center rounded-full border-[7px] border-health bg-white text-4xl font-black text-health">
+    <div className="grid grid-cols-[repeat(auto-fit,minmax(220px,1fr))] gap-5 rounded-lg border border-green-200 bg-health-soft p-4">
+      <div className="flex min-w-0 items-center gap-4 sm:flex-col sm:items-start sm:justify-center">
+        <div className="grid h-24 w-24 shrink-0 place-items-center rounded-full border-[7px] border-health bg-white text-4xl font-black text-health">
           {listing.score}
         </div>
-        <div>
-          <div className="text-sm font-semibold text-slate-600">Healthy Community Score</div>
-          <div className="text-xl font-extrabold text-health">{listing.scoreLabel}</div>
+        <div className="min-w-0">
+          <div className="text-sm font-semibold leading-5 text-slate-600">Healthy Community Score</div>
+          <div className="text-xl font-extrabold leading-tight text-health">{listing.scoreLabel}</div>
         </div>
       </div>
-      <div>
+      <div className="min-w-0">
         <div className="mb-3 text-sm font-extrabold text-ink">Why this score?</div>
-        <div className="grid gap-2 sm:grid-cols-2">
-          {listing.matchReasons.concat(listing.highlights).slice(0, 6).map((reason, index) => (
-            <div key={`${reason}-${index}`} className="flex items-center gap-2 text-sm font-semibold text-slate-700">
-              <span className="grid h-5 w-5 place-items-center rounded bg-green-100 text-health">
+        <div className="grid min-w-0 gap-2">
+          {reasons.map((reason) => (
+            <div key={reason} className="flex min-w-0 items-start gap-2 text-sm font-semibold leading-5 text-slate-700">
+              <span className="mt-0.5 grid h-5 w-5 shrink-0 place-items-center rounded bg-green-100 text-health">
                 <Check className="h-4 w-4" />
               </span>
-              {reason}
+              <span className="min-w-0 break-words">{reason}</span>
             </div>
           ))}
         </div>
       </div>
-      <div className="rounded-md border border-green-200 bg-white/70 p-3 text-sm">
+      <div className="min-w-0 rounded-md border border-green-200 bg-white/70 p-3 text-sm">
         <div className="mb-2 font-extrabold text-ink">About this Area</div>
         <div className="space-y-1 text-xs font-semibold text-slate-700">
           <div className="flex justify-between gap-2">
@@ -223,6 +257,12 @@ function ScorePanel({ listing }: { listing: RankedListing }) {
 }
 
 function TrendsChart({ listing }: { listing: RankedListing }) {
+  const trendSeries = [
+    { dataKey: "preventiveCare", name: "Preventive Care Use (%)", stroke: "#12a63a", yAxisId: "percent" },
+    { dataKey: "medianRent", name: "Median Rent ($)", stroke: "#0b63ce", yAxisId: "rent" },
+    { dataKey: "diabetes", name: "Diabetes Prevalence (%)", stroke: "#7d3fc8", yAxisId: "percent" }
+  ];
+
   return (
     <div className="h-[260px] w-full">
       <ResponsiveContainer>
@@ -245,17 +285,104 @@ function TrendsChart({ listing }: { listing: RankedListing }) {
             domain={[500, 2500]}
           />
           <Tooltip
-            formatter={(value, name) => [
-              name === "medianRent" ? formatMoney(Number(value)) : `${value}%`,
-              name === "diabetes" ? "Diabetes" : name === "preventiveCare" ? "Preventive Care" : "Median Rent"
-            ]}
+            formatter={(value, name) => {
+              const seriesName = String(name);
+              if (seriesName.includes("Preventive")) return [`${value}%`, "Preventive Care Use"];
+              if (seriesName.includes("Rent")) return [formatMoney(Number(value)), "Median Rent"];
+              if (seriesName.includes("Diabetes")) return [`${value}%`, "Diabetes Prevalence"];
+              return [value, seriesName];
+            }}
           />
           <Legend iconType="line" wrapperStyle={{ fontSize: 12, fontWeight: 700 }} />
-          <Line yAxisId="percent" dataKey="diabetes" name="Diabetes Prevalence (%)" stroke="#7d3fc8" strokeWidth={3} dot={{ r: 4 }} />
-          <Line yAxisId="percent" dataKey="preventiveCare" name="Preventive Care Use (%)" stroke="#12a63a" strokeWidth={3} dot={{ r: 4 }} />
-          <Line yAxisId="rent" dataKey="medianRent" name="Median Rent ($)" stroke="#0b63ce" strokeWidth={3} dot={{ r: 4 }} />
+          {trendSeries.map((series) => (
+            <Line
+              key={series.dataKey}
+              yAxisId={series.yAxisId}
+              dataKey={series.dataKey}
+              name={series.name}
+              stroke={series.stroke}
+              strokeWidth={3}
+              dot={{ r: 4 }}
+            />
+          ))}
         </LineChart>
       </ResponsiveContainer>
+    </div>
+  );
+}
+
+function TrendDetailsModal({ listing, onClose }: { listing: RankedListing; onClose: () => void }) {
+  const firstTrend = listing.area.trends[0];
+  const lastTrend = listing.area.trends[listing.area.trends.length - 1];
+
+  return (
+    <div className="fixed inset-0 z-[1000] grid place-items-center bg-navy/30 p-4" onClick={onClose}>
+      <section
+        className="max-h-[90vh] w-full max-w-4xl overflow-y-auto rounded-lg bg-white p-5 shadow-panel"
+        onClick={(event) => event.stopPropagation()}
+      >
+        <div className="mb-5 flex items-start justify-between gap-4">
+          <div>
+            <h2 className="text-2xl font-black text-ink">Trend Details for {listing.town}</h2>
+            <p className="mt-1 text-sm font-semibold text-slate-600">
+              Five-year health and housing-cost signals for {listing.area.areaName}.
+            </p>
+          </div>
+          <button type="button" onClick={onClose} className="grid h-10 w-10 shrink-0 place-items-center rounded-md border border-line-soft">
+            <X className="h-5 w-5" />
+          </button>
+        </div>
+
+        <div className="grid gap-4 md:grid-cols-3">
+          <MetricCard
+            icon={<ShieldCheck className="h-6 w-6" />}
+            value={`${lastTrend.preventiveCare}%`}
+            label="Preventive Care Use"
+            detail={`${formatPointDelta(firstTrend.preventiveCare, lastTrend.preventiveCare)} since ${firstTrend.year}`}
+            tone="green"
+          />
+          <MetricCard
+            icon={<Home className="h-6 w-6" />}
+            value={formatMoney(lastTrend.medianRent)}
+            label="Median Rent"
+            detail={`${formatMoneyDelta(firstTrend.medianRent, lastTrend.medianRent)} since ${firstTrend.year}`}
+          />
+          <MetricCard
+            icon={<Activity className="h-6 w-6" />}
+            value={`${lastTrend.diabetes}%`}
+            label="Diabetes Prevalence"
+            detail={`${formatPointDelta(firstTrend.diabetes, lastTrend.diabetes)} since ${firstTrend.year}`}
+            tone="purple"
+          />
+        </div>
+
+        <div className="mt-5 rounded-lg border border-line-soft bg-white p-4">
+          <TrendsChart listing={listing} />
+        </div>
+
+        <div className="mt-5 overflow-hidden rounded-lg border border-line-soft">
+          <table className="w-full text-left text-sm">
+            <thead className="bg-panel-soft text-xs font-extrabold uppercase tracking-normal text-slate-600">
+              <tr>
+                <th className="px-4 py-3">Year</th>
+                <th className="px-4 py-3">Preventive Care</th>
+                <th className="px-4 py-3">Median Rent</th>
+                <th className="px-4 py-3">Diabetes</th>
+              </tr>
+            </thead>
+            <tbody className="divide-y divide-line-soft font-semibold text-slate-700">
+              {listing.area.trends.map((trend) => (
+                <tr key={trend.year}>
+                  <td className="px-4 py-3 font-extrabold text-ink">{trend.year}</td>
+                  <td className="px-4 py-3">{trend.preventiveCare}%</td>
+                  <td className="px-4 py-3">{formatMoney(trend.medianRent)}</td>
+                  <td className="px-4 py-3">{trend.diabetes}%</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </section>
     </div>
   );
 }
@@ -282,6 +409,7 @@ export default function HealthyHomeDashboard() {
   const [loading, setLoading] = useState(false);
   const [sourceOpen, setSourceOpen] = useState(false);
   const [detailOpen, setDetailOpen] = useState(false);
+  const [trendOpen, setTrendOpen] = useState(false);
   const [savedListings, setSavedListings] = useState<string[]>(() => {
     if (typeof window === "undefined") return [];
     const saved = window.localStorage.getItem("healthyhome.savedListings");
@@ -299,6 +427,8 @@ export default function HealthyHomeDashboard() {
     () => response.listings.find((listing) => listing.id === response.selectedListingId) ?? response.listings[0],
     [response.listings, response.selectedListingId]
   );
+  const healthcareResources = selected.resources.filter((resource) => resource.type === "hospital" || resource.type === "clinic");
+  const transitResources = selected.resources.filter((resource) => resource.type === "transit");
   const savedSearch = savedSearches.includes(query);
 
   const aiProviderLabel = {
@@ -479,13 +609,17 @@ export default function HealthyHomeDashboard() {
                 saved={savedListings.includes(listing.id)}
                 onSelect={() => selectListing(listing.id)}
                 onToggleSave={() => toggleSaveListing(listing.id)}
+                onViewDetails={() => {
+                  selectListing(listing.id);
+                  setDetailOpen(true);
+                }}
               />
             ))}
           </div>
         </section>
 
-        <section className="grid gap-4">
-          <div className="rounded-lg border border-line-soft bg-white p-3 shadow-panel">
+        <section className="grid content-start gap-4 self-start">
+          <div className="self-start rounded-lg border border-line-soft bg-white p-3 shadow-panel">
             <div className="mb-3 flex flex-wrap items-center justify-between gap-2">
               <div className="rounded-md border border-line-soft bg-white px-3 py-2 text-sm font-extrabold text-ink">
                 Map Area: 04043 + 10 miles
@@ -503,61 +637,17 @@ export default function HealthyHomeDashboard() {
           </div>
 
           <div className="rounded-lg border border-line-soft bg-white p-3 shadow-panel">
-            <div className="grid gap-4 md:grid-cols-[220px_1fr]">
-              <Image
-                src={selected.image}
-                alt=""
-                width={440}
-                height={300}
-                className="h-full min-h-[150px] w-full rounded-md object-cover"
-              />
-              <div className="flex flex-col justify-between gap-4">
-                <div>
-                  <h2 className="text-2xl font-black text-ink">{selected.address}</h2>
-                  <p className="text-base font-semibold text-slate-700">
-                    {selected.town}, {selected.state} {selected.zip}
-                  </p>
-                  <div className="mt-4 text-2xl font-black text-ink">
-                    {formatMoney(selected.rent)}
-                    <span className="text-base font-bold"> / month</span>
-                  </div>
-                  <div className="mt-3 flex flex-wrap gap-5 text-sm font-bold text-slate-700">
-                    <span>{selected.beds} bd</span>
-                    <span>{selected.baths} ba</span>
-                    <span>{selected.sqft.toLocaleString()} sqft</span>
-                  </div>
-                </div>
-                <div className="flex gap-3">
-                  <button
-                    type="button"
-                    onClick={() => setDetailOpen(true)}
-                    className="flex-1 rounded-md bg-primary px-5 py-3 text-sm font-extrabold text-white transition hover:bg-primary-dark"
-                  >
-                    View Property Details
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() => toggleSaveListing(selected.id)}
-                    className="grid h-12 w-12 place-items-center rounded-md border border-line-soft text-primary"
-                  >
-                    <Heart className={savedListings.includes(selected.id) ? "h-6 w-6 fill-current" : "h-6 w-6"} />
-                  </button>
-                </div>
-              </div>
-            </div>
-            <div className="mt-4 border-t border-line-soft pt-4">
-              <ScorePanel listing={selected} />
-              <div className="mt-3 flex items-center justify-center gap-2 text-xs font-semibold text-slate-600">
-                Scores and data sources
-                <button type="button" onClick={() => setSourceOpen(true)} className="text-primary">
-                  <Info className="h-4 w-4" />
-                </button>
-              </div>
+            <ScorePanel listing={selected} />
+            <div className="mt-3 flex items-center justify-center gap-2 text-xs font-semibold text-slate-600">
+              Scores and data sources
+              <button type="button" onClick={() => setSourceOpen(true)} className="text-primary">
+                <Info className="h-4 w-4" />
+              </button>
             </div>
           </div>
         </section>
 
-        <aside className="grid gap-4">
+        <aside className="grid content-start gap-4 self-start">
           <section className="rounded-lg border border-line-soft bg-white p-4 shadow-panel">
             <div className="mb-4 flex items-center justify-between">
               <h2 className="text-lg font-black text-ink">Health & Housing Overview</h2>
@@ -578,7 +668,7 @@ export default function HealthyHomeDashboard() {
           <section className="rounded-lg border border-line-soft bg-white p-4 shadow-panel">
             <div className="mb-2 flex items-center justify-between">
               <h2 className="text-lg font-black text-ink">Trends for {selected.town} (Past 5 Years)</h2>
-              <button type="button" className="text-xs font-extrabold text-primary">
+              <button type="button" onClick={() => setTrendOpen(true)} className="text-xs font-extrabold text-primary">
                 View Details
               </button>
             </div>
@@ -588,12 +678,9 @@ export default function HealthyHomeDashboard() {
           <section className="rounded-lg border border-line-soft bg-white p-4 shadow-panel">
             <div className="mb-4 flex items-center justify-between">
               <h2 className="text-lg font-black text-ink">Nearby Healthcare Resources</h2>
-              <button type="button" className="text-xs font-extrabold text-primary">
-                View Map
-              </button>
             </div>
-            <div className="grid gap-3 sm:grid-cols-3">
-              {selected.resources.map((resource) => (
+            <div className="grid gap-3 sm:grid-cols-2">
+              {healthcareResources.map((resource) => (
                 <div key={resource.id} className="flex gap-3 rounded-md bg-panel-soft p-3">
                   <span className="grid h-10 w-10 shrink-0 place-items-center rounded-md bg-blue-50 text-primary">
                     <ResourceIcon type={resource.type} />
@@ -608,14 +695,28 @@ export default function HealthyHomeDashboard() {
             </div>
           </section>
 
-          <section className="rounded-lg border border-line-soft bg-panel-soft p-4 text-sm shadow-panel">
-            <div className="flex items-start gap-3">
-              <ShieldCheck className="mt-0.5 h-7 w-7 shrink-0 text-primary" />
-              <p className="font-semibold leading-6 text-slate-700">
-                We use public community indicators only. No personal health data is collected, and this prototype does not provide medical, financial, or real-estate advice.
-              </p>
-            </div>
-          </section>
+          {transitResources.length > 0 && (
+            <section className="rounded-lg border border-line-soft bg-white p-4 shadow-panel">
+              <div className="mb-4 flex items-center justify-between">
+                <h2 className="text-lg font-black text-ink">Nearby Transit Access</h2>
+              </div>
+              <div className="grid gap-3">
+                {transitResources.map((resource) => (
+                  <div key={resource.id} className="flex gap-3 rounded-md bg-panel-soft p-3">
+                    <span className="grid h-10 w-10 shrink-0 place-items-center rounded-md bg-blue-50 text-primary">
+                      <ResourceIcon type={resource.type} />
+                    </span>
+                    <div>
+                      <div className="text-sm font-extrabold text-ink">{resource.name}</div>
+                      <div className="text-sm font-semibold text-slate-700">{resource.distanceMiles} miles</div>
+                      <div className="text-xs text-slate-600">{resource.detail}</div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </section>
+          )}
+
         </aside>
       </div>
 
@@ -628,6 +729,12 @@ export default function HealthyHomeDashboard() {
         </div>
         <div className="rounded-lg bg-panel-soft p-4 text-sm font-semibold text-slate-700">
           Search path: OCI Gen AI first, Vercel AI Gateway fallback, deterministic parser as final fallback.
+        </div>
+        <div className="flex items-start gap-2 border-t border-line-soft pt-3 text-xs font-semibold leading-5 text-slate-500 md:col-span-3">
+          <ShieldCheck className="mt-0.5 h-4 w-4 shrink-0 text-primary" />
+          <p>
+            We use public community indicators only. No personal health data is collected, and this prototype does not provide medical, financial, or real-estate advice.
+          </p>
         </div>
       </footer>
 
@@ -663,6 +770,22 @@ export default function HealthyHomeDashboard() {
                   <div className="text-base font-black text-ink">{source.metric}</div>
                   <div className="mt-1 text-sm font-bold text-primary">{source.source}</div>
                   <div className="mt-2 text-sm leading-6 text-slate-700">{source.definition}</div>
+                  {"sourceLinks" in source && source.sourceLinks.length > 0 && (
+                    <div className="mt-3 flex flex-wrap gap-2">
+                      {source.sourceLinks.map((link) => (
+                        <a
+                          key={link.href}
+                          href={link.href}
+                          target="_blank"
+                          rel="noreferrer"
+                          className="inline-flex items-center gap-1 rounded-md border border-line-soft bg-white px-3 py-2 text-xs font-extrabold text-primary transition hover:border-blue-200 hover:bg-blue-50"
+                        >
+                          {link.label}
+                          <ExternalLink className="h-3.5 w-3.5" />
+                        </a>
+                      ))}
+                    </div>
+                  )}
                   <div className="mt-2 text-xs font-bold text-slate-500">{source.year}</div>
                 </div>
               ))}
@@ -706,6 +829,8 @@ export default function HealthyHomeDashboard() {
           </section>
         </div>
       )}
+
+      {trendOpen && <TrendDetailsModal listing={selected} onClose={() => setTrendOpen(false)} />}
     </main>
   );
 }

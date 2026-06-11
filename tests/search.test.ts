@@ -61,4 +61,35 @@ describe("ranking", () => {
     expect(ranked.some((listing) => listing.id === "atlantic-court")).toBe(false);
     expect(ranked.every((listing) => listing.rent <= 1800)).toBe(true);
   });
+
+  it("treats below rent searches as a hard affordability-led cap", () => {
+    const intent = parseIntentLocally("Find rentals with monthly rent below $1800");
+    const ranked = rankListings(listings, intent);
+
+    expect(intent.maxRent).toBe(1800);
+    expect(intent.rentConstraint).toBe("hard");
+    expect(intent.weights.affordability).toBeGreaterThan(intent.weights.health);
+    expect(ranked.every((listing) => listing.rent <= 1800)).toBe(true);
+  });
+
+  it("prioritizes transit and affordability when the query asks for budget friendly transit options", () => {
+    const intent = parseIntentLocally("Show me budget friendly options with good transit options");
+    const ranked = rankListings(listings, intent);
+
+    expect(intent.weights.affordability).toBeGreaterThan(intent.weights.health);
+    expect(intent.weights.transit).toBeGreaterThanOrEqual(intent.weights.health);
+    expect(ranked[0].id).not.toBe("tidewater-lofts");
+    expect(["harborline", "birch-commons", "atlantic-court"]).toContain(ranked[0].id);
+  });
+
+  it("prioritizes higher-transit listings for the best transit near care guided prompt", () => {
+    const intent = parseIntentLocally(
+      "Find rentals near 04043 with good transit access, nearby healthcare resources, and monthly rent below $2,100."
+    );
+    const ranked = rankListings(listings, intent);
+
+    expect(intent.weights.transit).toBeGreaterThan(intent.weights.health);
+    expect(ranked[0].id).not.toBe("tidewater-lofts");
+    expect(ranked[0].area.transitScore).toBeGreaterThan(62);
+  });
 });

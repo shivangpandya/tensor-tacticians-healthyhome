@@ -12,6 +12,7 @@ export type HealthPriority =
 export type SearchIntent = {
   propertyType: PropertyType;
   maxRent: number;
+  rentConstraint: "hard" | "soft";
   locationLabel: string;
   radiusMiles: number;
   beds?: number;

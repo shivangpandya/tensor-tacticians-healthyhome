@@ -4,6 +4,7 @@ import type { SearchIntent } from "@/lib/types";
 export const searchIntentSchema = z.object({
   propertyType: z.enum(["rental", "home"]).default("rental"),
   maxRent: z.coerce.number().int().positive().max(10000).default(2000),
+  rentConstraint: z.enum(["hard", "soft"]).default("soft"),
   locationLabel: z.string().min(1).default("04043 + 10 miles"),
   radiusMiles: z.coerce.number().positive().max(100).default(10),
   beds: z.coerce.number().int().positive().max(8).optional(),
@@ -92,6 +93,7 @@ Return ONLY strict JSON matching this TypeScript type:
 {
   "propertyType": "rental" | "home",
   "maxRent": number,
+  "rentConstraint": "hard" | "soft",
   "locationLabel": string,
   "radiusMiles": number,
   "beds"?: number,
@@ -102,7 +104,7 @@ Return ONLY strict JSON matching this TypeScript type:
   "explanation": string
 }
 
-Use a health-heavy model. If the user mentions low diabetes, preventive care, healthcare resources, providers, uninsured rate, or primary care, increase health/care weights. If the user mentions transit, set transitPreference to preferred or required. If the user gives a rent cap, extract it. If location is unclear, use "04043 + 10 miles".
+Use a health-heavy model. If the user mentions low diabetes, preventive care, healthcare resources, providers, uninsured rate, or primary care, increase health/care weights. If the user mentions transit, set transitPreference to preferred or required. If the user gives a rent cap, extract it. Set rentConstraint to "hard" for exact cap phrases like under, below, less than, no more than, max, maximum, up to, or at most. Set rentConstraint to "soft" for fuzzy phrases like around, about, near, roughly, approximately, or budget-friendly. If location is unclear, use "04043 + 10 miles".
 
 User query: ${query}`;
 }
