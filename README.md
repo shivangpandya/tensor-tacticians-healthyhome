@@ -1,4 +1,5 @@
-###1. What did you build?
+### 1. What did you build?
+
 We built Healthy Home Matcher, an AI-powered health-fit layer for housing search. It helps renters and homebuyers understand whether a home will support or work against their health, lifestyle, and medical needs before they commit to a lease or purchase.
 The story is simple: people already compare homes by price, size, photos, schools, and commute, but they are left to figure out health fit on their own. A home can look perfect online and still make daily life harder because it has poor air quality, weak grocery access, low walkability, high environmental risk, or limited access to relevant medical care.
 Healthy Home Matcher turns those scattered health signals into two clear scores: a Preventative / Active Health Score and a Medical Access Score. The Preventative / Active Health Score shows how well the home supports daily healthy living, including walkability, air quality, pollution exposure, parks, grocery access, and environmental safety. The Medical Access Score shows how well the location supports specific medical needs, including access to hospitals, pharmacies, clinics, cancer treatment, diabetes care, dialysis, allergy care, and asthma care.
